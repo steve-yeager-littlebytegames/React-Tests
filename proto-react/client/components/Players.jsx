@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/site.css';
+import '../css/players.css';
 
 export default class Players extends React.Component {
     render() {

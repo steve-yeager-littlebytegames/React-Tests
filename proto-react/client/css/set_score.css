@@ -1,0 +1,12 @@
+#set-score {
+    margin: 10px 0;
+}
+
+.player-score {
+    font-size: 20px;
+}
+
+#player-score-sep {
+    margin: auto 5px;
+    font-size: 20px;
+}
