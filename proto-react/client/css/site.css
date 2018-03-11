@@ -1,0 +1,17 @@
+#player-names {
+    width: 200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.player-name {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.player-versus {
+    margin: auto 0;
+    padding: 0 10px;
+}
