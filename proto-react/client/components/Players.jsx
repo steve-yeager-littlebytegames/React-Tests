@@ -6,7 +6,7 @@ export default class Players extends React.Component {
         return (
             <div id="player-names">
                 <span className="player-name">{this.props.player1}</span>
-                <span className="player-versus"> v </span>
+                <span className="player-versus">vs</span>
                 <span className="player-name">{this.props.player2}</span>
             </div>);
     }
