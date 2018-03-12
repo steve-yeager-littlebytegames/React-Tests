@@ -1,9 +1,9 @@
 export default class Match {
-    constructor(message) {
-        this.message = message;
+    constructor(id) {
+        this.id = id;
     }
 
-    hello() {
-        console.log("testing");
+    message() {
+        return "Match " + this.id;
     }
 }
