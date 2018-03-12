@@ -10,16 +10,17 @@ export default class App extends React.Component {
     this.state = {
       score1: 0,
       score2: 0,
+      matches: [
+        new Match("match 1"),
+        new Match("match 2"),
+      ]
     }
     this.updateScore = this.updateScore.bind(this);
-    this.matches = [
-      new Match("match 1"),
-      new Match("match 2"),
-    ]
+    this.addMatch = this.addMatch.bind(this);
   }
 
   render() {
-    const matchComps = this.matches.map(m => 
+    const matchComps = this.state.matches.map(m => 
       <li key={m.message}>{m.message}</li>
     );
 
@@ -33,7 +34,13 @@ export default class App extends React.Component {
   }
 
   addMatch() {
-    console.log("adding match");
+    var matches = this.state.matches;
+    var matchID = matches.length + 1;
+    var match = new Match("match " + matchID);
+    matches.push(match);
+    this.setState({
+      matches: matches
+    })
   }
 
   updateScore(playerNumber) {
