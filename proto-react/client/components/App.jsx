@@ -2,7 +2,7 @@ import React from 'react';
 import Players from './Players.jsx'
 import SetScore from './SetScore.jsx'
 import AddMatch from './AddMatch.jsx'
-import MatchComp from './MatchComp.jsx'
+import MatchForm from './MatchForm.jsx'
 import Match from '../src/match.js'
 
 export default class App extends React.Component {
@@ -23,16 +23,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const matchComps = this.state.matches.map(m => 
-      <MatchComp key={m.id} match={m} deleteMatch={this.deleteMatch}/>
-    );
-
     return (
       <div style={{ textAlign: 'center' }}>
-        <Players player1="boyBlue_" player2="MMFane"/>
-        <SetScore player1={this.state.score1} player2={this.state.score2} scoreUpdate={this.updateScore}/>
-        <AddMatch onAdd={this.addMatch}/>
-        <ol>{matchComps}</ol>
+        <Players player1="boyBlue_" player2="MMFane" />
+        <SetScore player1={this.state.score1} player2={this.state.score2} scoreUpdate={this.updateScore} />
+        <AddMatch onAdd={this.addMatch} />
+        <MatchForm matches={this.state.matches} deleteMatch={this.deleteMatch} />
       </div>);
   }
 
@@ -57,12 +53,12 @@ export default class App extends React.Component {
   }
 
   updateScore(playerNumber) {
-    if(playerNumber == 1) {
+    if (playerNumber == 1) {
       var score = this.state.score1 + 1;
-      this.setState({score1: score});
-    }else{
+      this.setState({ score1: score });
+    } else {
       var score = this.state.score2 + 1;
-      this.setState({score2: score});
+      this.setState({ score2: score });
     }
   }
 }
