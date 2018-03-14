@@ -17,18 +17,20 @@ export default class App extends React.Component {
       matches: []
     }
 
-    this.updateScore = this.updateScore.bind(this);
     this.addMatch = this.addMatch.bind(this);
     this.deleteMatch = this.deleteMatch.bind(this);
+    this.updateScore = this.updateScore.bind(this);
   }
 
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
         <Players player1="boyBlue_" player2="MMFane" />
-        <SetScore player1={this.state.score1} player2={this.state.score2} scoreUpdate={this.updateScore} />
+        <SetScore player1={this.state.score1} player2={this.state.score2} />
         <AddMatch onAdd={this.addMatch} />
-        <MatchForm matches={this.state.matches} deleteMatch={this.deleteMatch} />
+        <MatchForm matches={this.state.matches}
+          deleteMatch={this.deleteMatch}
+          updateScore={this.updateScore} />
       </div>);
   }
 
@@ -52,13 +54,30 @@ export default class App extends React.Component {
     });
   }
 
-  updateScore(playerNumber) {
-    if (playerNumber == 1) {
-      var score = this.state.score1 + 1;
-      this.setState({ score1: score });
+  updateScore(index, player, score) {
+    var matches = JSON.parse(JSON.stringify(this.state.matches));
+
+    var match = matches.find(m => m.id == index);
+    if (player === 1) {
+      match.p1Score = score;
     } else {
-      var score = this.state.score2 + 1;
-      this.setState({ score2: score });
+      match.p2Score = score;
     }
+
+    var p1Score = 0;
+    var p2Score = 0;
+    for (var i = 0; i < matches.length; i++) {
+      if (matches[i].p1Score > matches[i].p2Score) {
+        p1Score++;
+      } else if (matches[i].p2Score > matches[i].p1Score) {
+        p2Score++;
+      }
+    }
+
+    this.setState({
+      score1: p1Score,
+      score2: p2Score,
+      matches: matches
+    });
   }
 }

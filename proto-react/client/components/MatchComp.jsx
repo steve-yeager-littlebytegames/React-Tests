@@ -4,7 +4,8 @@ import '../css/match.css';
 
 export default class MatchComp extends React.Component {
     render() {
-        const index = this.props.match.id;
+        const match = this.props.match;
+        const index = match.id;
         const namePrefix = "matches[" + index + "].";
         const matchCharPrefix = namePrefix + "matchCharacters[";
 
@@ -16,7 +17,7 @@ export default class MatchComp extends React.Component {
 
                 <label className="match-input">
                     P1 Score
-                    <input type="number" name={namePrefix + "player1score"} />
+                    <input type="number" name={namePrefix + "player1score"} value={match.p1Score} onChange={event => this.props.updateScore(index, 1, event.target.value)} />
                 </label>
                 <label className="match-input">
                     P1 Character
@@ -29,7 +30,7 @@ export default class MatchComp extends React.Component {
                 <div className="input-break" />
                 <label className="match-input">
                     P2 Score
-                    <input type="number" name={namePrefix + "player2score"} />
+                    <input type="number" name={namePrefix + "player2score"} value={match.p2Score} onChange={event => this.props.updateScore(index, 2, event.target.value)} />
                 </label>
                 <label className="match-input">
                     P2 Character
@@ -50,7 +51,7 @@ export default class MatchComp extends React.Component {
                 </label>
                 <div className="input-break" />
                 <button onClick={() => this.props.deleteMatch(index)}>Delete Match</button>
-            </div >
+            </div>
         );
     }
 }
