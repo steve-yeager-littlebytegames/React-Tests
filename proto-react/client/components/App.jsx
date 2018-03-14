@@ -57,7 +57,7 @@ export default class App extends React.Component {
   }
 
   updateScore(index, player, score) {
-    var matches = JSON.parse(JSON.stringify(this.state.matches));
+    var matches = this.state.matches.splice(0);
 
     var match = matches.find(m => m.id == index);
     if (player === 1) {
@@ -78,18 +78,7 @@ export default class App extends React.Component {
 
     const enoughSets = matches.length > 1;
     const hasWinner = p1Score != p2Score;
-
-    // TODO: Encapsulate in match class.
-    var allMatchesComplete = true;
-    for (var i = 0; i < matches.length; i++) {
-      var match = matches[i];
-      var isComplete = match.p1Score != match.p2Score && (match.p1Score != 0 || match.p2Score != 0);
-      if (!isComplete) {
-        allMatchesComplete = false;
-        break;
-      }
-    }
-
+    const allMatchesComplete = matches.every(m => { return m.isComplete });
     const canSubmit = enoughSets && hasWinner && allMatchesComplete;
 
     this.setState({
@@ -98,9 +87,5 @@ export default class App extends React.Component {
       canSubmit: canSubmit,
       matches: matches
     });
-  }
-
-  checkMatches(match) {
-    return match.isComplete();
   }
 }
