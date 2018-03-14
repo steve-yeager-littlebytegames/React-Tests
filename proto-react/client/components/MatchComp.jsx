@@ -48,6 +48,7 @@ export default class MatchComp extends React.Component {
                         <option value="2">Smashville</option>
                     </select>
                 </label>
+                <div className="input-break" />
                 <button onClick={() => this.props.deleteMatch(index)}>Delete Match</button>
             </div >
         );
