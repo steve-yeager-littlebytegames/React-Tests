@@ -1,0 +1,17 @@
+.match {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.match-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.input-break {
+    height: 1px;
+    background-color: gray;
+    margin: 10px 0;
+}
