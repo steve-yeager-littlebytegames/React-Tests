@@ -13,7 +13,7 @@ export default class MatchForm extends React.Component {
             <form onSubmit={this.handleSubmit}>
                 <input type="hidden" name="id" value="38" />
                 {matchComps}
-                <button disabled={this.props.matches.length === 0}>Submit</button>
+                <button disabled={!this.props.canSubmit}>Submit</button>
             </form>
         );
     }

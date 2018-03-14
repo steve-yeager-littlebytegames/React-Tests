@@ -14,6 +14,7 @@ export default class App extends React.Component {
     this.state = {
       score1: 0,
       score2: 0,
+      canSubmit: false,
       matches: []
     }
 
@@ -29,6 +30,7 @@ export default class App extends React.Component {
         <SetScore player1={this.state.score1} player2={this.state.score2} />
         <AddMatch onAdd={this.addMatch} />
         <MatchForm matches={this.state.matches}
+          canSubmit={this.state.canSubmit}
           deleteMatch={this.deleteMatch}
           updateScore={this.updateScore} />
       </div>);
@@ -74,10 +76,31 @@ export default class App extends React.Component {
       }
     }
 
+    const enoughSets = matches.length > 1;
+    const hasWinner = p1Score != p2Score;
+
+    // TODO: Encapsulate in match class.
+    var allMatchesComplete = true;
+    for (var i = 0; i < matches.length; i++) {
+      var match = matches[i];
+      var isComplete = match.p1Score != match.p2Score && (match.p1Score != 0 || match.p2Score != 0);
+      if (!isComplete) {
+        allMatchesComplete = false;
+        break;
+      }
+    }
+
+    const canSubmit = enoughSets && hasWinner && allMatchesComplete;
+
     this.setState({
       score1: p1Score,
       score2: p2Score,
+      canSubmit: canSubmit,
       matches: matches
     });
+  }
+
+  checkMatches(match) {
+    return match.isComplete();
   }
 }
