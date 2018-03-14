@@ -51,6 +51,9 @@ export default class App extends React.Component {
     var matches = this.state.matches;
     var index = matches.findIndex(m => m.id == matchID);
     matches.splice(index, 1);
+
+    this.update(matches);
+
     this.setState({
       matches: matches
     });
@@ -66,6 +69,10 @@ export default class App extends React.Component {
       match.p2Score = score;
     }
 
+    this.update(matches);
+  }
+
+  update(matches) {
     var p1Score = 0;
     var p2Score = 0;
     for (var i = 0; i < matches.length; i++) {
@@ -76,10 +83,7 @@ export default class App extends React.Component {
       }
     }
 
-    const enoughSets = matches.length > 1;
-    const hasWinner = p1Score != p2Score;
-    const allMatchesComplete = matches.every(m => { return m.isComplete });
-    const canSubmit = enoughSets && hasWinner && allMatchesComplete;
+    const canSubmit = this.canSubmit(matches, p1Score, p2Score);
 
     this.setState({
       score1: p1Score,
@@ -87,5 +91,12 @@ export default class App extends React.Component {
       canSubmit: canSubmit,
       matches: matches
     });
+  }
+
+  canSubmit(matches, p1Score, p2Score) {
+    const enoughSets = matches.length > 1;
+    const hasWinner = p1Score != p2Score;
+    const allMatchesComplete = matches.every(m => { return m.isComplete });
+    return enoughSets && hasWinner && allMatchesComplete;
   }
 }
