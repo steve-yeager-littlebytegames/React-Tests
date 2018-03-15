@@ -21,7 +21,7 @@ export default class MatchComp extends React.Component {
                 </label>
                 <label className="match-input">
                     P1 Character
-                    <select name={matchCharPrefix + "0].characterID"}>
+                    <select name={matchCharPrefix + "0].characterID"} value={match.p1Characters[0]} onChange={event => this.props.updateCharacter(index, 1, event.target.value)}>
                         <option value="72">Mario</option>
                         <option value="73">Link</option>
                         <option value="93">Sonic</option>
@@ -34,7 +34,7 @@ export default class MatchComp extends React.Component {
                 </label>
                 <label className="match-input">
                     P2 Character
-                    <select name={matchCharPrefix + "1].characterID"}>
+                    <select name={matchCharPrefix + "1].characterID"} value={match.p2Characters[0]} onChange={event => this.props.updateCharacter(index, 2, event.target.value)}>
                         <option value="72">Mario</option>
                         <option value="73">Link</option>
                         <option value="93">Sonic</option>

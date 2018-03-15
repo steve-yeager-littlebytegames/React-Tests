@@ -22,6 +22,7 @@ export default class App extends React.Component {
     this.deleteMatch = this.deleteMatch.bind(this);
     this.updateScore = this.updateScore.bind(this);
     this.updateStage = this.updateStage.bind(this);
+    this.updateCharacter = this.updateCharacter.bind(this);
   }
 
   render() {
@@ -34,7 +35,9 @@ export default class App extends React.Component {
           canSubmit={this.state.canSubmit}
           deleteMatch={this.deleteMatch}
           updateScore={this.updateScore}
-          updateStage={this.updateStage} />
+          updateScore={this.updateScore}
+          updateCharacter={this.updateCharacter}
+        />
       </div>);
   }
 
@@ -53,7 +56,7 @@ export default class App extends React.Component {
     matches.push(match);
     this.setState({
       matches: matches
-    })
+    });
   }
 
   deleteMatch(matchID) {
@@ -86,6 +89,19 @@ export default class App extends React.Component {
     var match = matches.find(m => m.id == index);
 
     match.stage = stage;
+
+    this.update(matches);
+  }
+
+  updateCharacter(index, player, character) {
+    var matches = this.state.matches.splice(0);
+    var match = matches.find(m => m.id == index);
+
+    if (player === 1) {
+      match.p1Characters[0] = character;
+    } else {
+      match.p2Characters[0] = character;
+    }
 
     this.update(matches);
   }

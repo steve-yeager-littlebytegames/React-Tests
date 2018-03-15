@@ -8,6 +8,7 @@ export default class MatchForm extends React.Component {
                 deleteMatch={this.props.deleteMatch}
                 updateScore={this.props.updateScore}
                 updateStage={this.props.updateStage}
+                updateCharacter={this.props.updateCharacter}
             />
         );
 
