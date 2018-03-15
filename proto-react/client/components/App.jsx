@@ -21,6 +21,7 @@ export default class App extends React.Component {
     this.addMatch = this.addMatch.bind(this);
     this.deleteMatch = this.deleteMatch.bind(this);
     this.updateScore = this.updateScore.bind(this);
+    this.updateStage = this.updateStage.bind(this);
   }
 
   render() {
@@ -32,7 +33,8 @@ export default class App extends React.Component {
         <MatchForm matches={this.state.matches}
           canSubmit={this.state.canSubmit}
           deleteMatch={this.deleteMatch}
-          updateScore={this.updateScore} />
+          updateScore={this.updateScore}
+          updateStage={this.updateStage} />
       </div>);
   }
 
@@ -41,6 +43,13 @@ export default class App extends React.Component {
     var matchID = this.count;
     this.count++;
     var match = new Match(matchID);
+    if (matches.length != 0) {
+      var lastMatch = matches[matches.length - 1];
+      match.p1Characters = lastMatch.p1Characters.splice(0);
+      match.p2Characters = lastMatch.p2Characters.splice(0);
+      match.stage = lastMatch.stage;
+    }
+
     matches.push(match);
     this.setState({
       matches: matches
@@ -61,13 +70,22 @@ export default class App extends React.Component {
 
   updateScore(index, player, score) {
     var matches = this.state.matches.splice(0);
-
     var match = matches.find(m => m.id == index);
+
     if (player === 1) {
       match.p1Score = score;
     } else {
       match.p2Score = score;
     }
+
+    this.update(matches);
+  }
+
+  updateStage(index, stage) {
+    var matches = this.state.matches.splice(0);
+    var match = matches.find(m => m.id == index);
+
+    match.stage = stage;
 
     this.update(matches);
   }

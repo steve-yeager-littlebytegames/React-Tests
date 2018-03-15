@@ -21,7 +21,7 @@ export default class MatchComp extends React.Component {
                 </label>
                 <label className="match-input">
                     P1 Character
-                        <select name={matchCharPrefix + "0].characterID"}>
+                    <select name={matchCharPrefix + "0].characterID"}>
                         <option value="72">Mario</option>
                         <option value="73">Link</option>
                         <option value="93">Sonic</option>
@@ -34,7 +34,7 @@ export default class MatchComp extends React.Component {
                 </label>
                 <label className="match-input">
                     P2 Character
-                        <select name={matchCharPrefix + "1].characterID"}>
+                    <select name={matchCharPrefix + "1].characterID"}>
                         <option value="72">Mario</option>
                         <option value="73">Link</option>
                         <option value="93">Sonic</option>
@@ -43,7 +43,7 @@ export default class MatchComp extends React.Component {
                 <div className="input-break" />
                 <label className="match-input">
                     Stage
-                    <select name={namePrefix + "stageID"} >
+                    <select name={namePrefix + "stageID"} value={match.stage || ''} onChange={event => this.props.updateStage(index, event.target.value)}>
                         <option value="1">Final Destination</option>
                         <option value="6">Battlefield</option>
                         <option value="2">Smashville</option>
