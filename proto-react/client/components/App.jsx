@@ -61,6 +61,10 @@ export default class App extends React.Component {
     var index = matches.findIndex(m => m.index == matchIndex);
     matches.splice(index, 1);
 
+    for (var i = 0; i < matches.length; ++i) {
+      matches[i].index = i;
+    }
+
     this.update(matches);
 
     this.setState({
