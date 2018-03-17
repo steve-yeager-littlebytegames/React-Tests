@@ -35,7 +35,7 @@ export default class App extends React.Component {
           canSubmit={this.state.canSubmit}
           deleteMatch={this.deleteMatch}
           updateScore={this.updateScore}
-          updateScore={this.updateScore}
+          updateStage={this.updateStage}
           updateCharacter={this.updateCharacter}
         />
       </div>);
