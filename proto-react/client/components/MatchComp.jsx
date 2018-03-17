@@ -5,7 +5,7 @@ import '../css/match.css';
 export default class MatchComp extends React.Component {
     render() {
         const match = this.props.match;
-        const index = match.id;
+        const index = match.index;
         const namePrefix = "matches[" + index + "].";
         const matchCharPrefix = namePrefix + "matchCharacters[";
 
@@ -50,7 +50,7 @@ export default class MatchComp extends React.Component {
                     </select>
                 </label>
                 <div className="input-break" />
-                <button onClick={() => this.props.deleteMatch(index)}>Delete Match</button>
+                <button type="button" onClick={() => this.props.deleteMatch(index)}>Delete Match</button>
             </div>
         );
     }

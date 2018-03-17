@@ -9,8 +9,6 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.count = 0;
-
     this.state = {
       score1: 0,
       score2: 0,
@@ -43,9 +41,8 @@ export default class App extends React.Component {
 
   addMatch() {
     var matches = this.state.matches;
-    var matchID = this.count;
-    this.count++;
-    var match = new Match(matchID);
+    var matchIndex = matches.length;
+    var match = new Match(matchIndex);
     if (matches.length != 0) {
       var lastMatch = matches[matches.length - 1];
       match.p1Characters = lastMatch.p1Characters.splice(0);
@@ -59,9 +56,9 @@ export default class App extends React.Component {
     });
   }
 
-  deleteMatch(matchID) {
+  deleteMatch(matchIndex) {
     var matches = this.state.matches;
-    var index = matches.findIndex(m => m.id == matchID);
+    var index = matches.findIndex(m => m.index == matchIndex);
     matches.splice(index, 1);
 
     this.update(matches);
@@ -73,7 +70,7 @@ export default class App extends React.Component {
 
   updateScore(index, player, score) {
     var matches = this.state.matches.splice(0);
-    var match = matches.find(m => m.id == index);
+    var match = matches.find(m => m.index == index);
 
     if (player === 1) {
       match.p1Score = score;
@@ -86,7 +83,7 @@ export default class App extends React.Component {
 
   updateStage(index, stage) {
     var matches = this.state.matches.splice(0);
-    var match = matches.find(m => m.id == index);
+    var match = matches.find(m => m.index == index);
 
     match.stage = stage;
 
@@ -95,7 +92,7 @@ export default class App extends React.Component {
 
   updateCharacter(index, player, character) {
     var matches = this.state.matches.splice(0);
-    var match = matches.find(m => m.id == index);
+    var match = matches.find(m => m.index == index);
 
     if (player === 1) {
       match.p1Characters[0] = character;
