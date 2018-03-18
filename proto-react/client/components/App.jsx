@@ -4,6 +4,7 @@ import SetScore from './SetScore.jsx'
 import AddMatch from './AddMatch.jsx'
 import MatchForm from './MatchForm.jsx'
 import Match from '../src/match.js'
+import Game from '../src/game.js'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ export default class App extends React.Component {
           <Players player1="boyBlue_" player2="MMFane" />
           <SetScore player1={this.state.score1} player2={this.state.score2} />
           <AddMatch onAdd={this.addMatch} />
-          <MatchForm matches={this.state.matches}
+          <MatchForm matches={this.state.matches} game={this.game}
             canSubmit={this.state.canSubmit}
             deleteMatch={this.deleteMatch}
             updateScore={this.updateScore}
@@ -147,6 +148,13 @@ export default class App extends React.Component {
     fetch("https://localhost:44304/Sets/60")
       .then(response => response.json())
       .then(json => {
+        var gameData = json.game;
+        this.game = new Game(gameData.setRules,
+          gameData.chactersPerMatch,
+          gameData.maxMatchPoints,
+          gameData.characters,
+          gameData.stages);
+
         var matches = [];
         for (var i = 0; i < json.matches.length; ++i) {
           var matchData = json.matches[i];

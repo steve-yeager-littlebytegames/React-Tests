@@ -10,7 +10,7 @@ export default class MatchForm extends React.Component {
 
     render() {
         const matchComps = this.props.matches.map(m =>
-            <MatchComp key={m.index} match={m}
+            <MatchComp key={m.index} match={m} game={this.props.game}
                 deleteMatch={this.props.deleteMatch}
                 updateScore={this.props.updateScore}
                 updateStage={this.props.updateStage}
