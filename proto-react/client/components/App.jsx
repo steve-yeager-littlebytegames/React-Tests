@@ -10,6 +10,7 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
+      isLoading: true,
       score1: 0,
       score2: 0,
       canSubmit: false,
@@ -21,22 +22,29 @@ export default class App extends React.Component {
     this.updateScore = this.updateScore.bind(this);
     this.updateStage = this.updateStage.bind(this);
     this.updateCharacter = this.updateCharacter.bind(this);
+
+    this.getSet();
   }
 
   render() {
-    return (
-      <div style={{ textAlign: 'center' }}>
-        <Players player1="boyBlue_" player2="MMFane" />
-        <SetScore player1={this.state.score1} player2={this.state.score2} />
-        <AddMatch onAdd={this.addMatch} />
-        <MatchForm matches={this.state.matches}
-          canSubmit={this.state.canSubmit}
-          deleteMatch={this.deleteMatch}
-          updateScore={this.updateScore}
-          updateStage={this.updateStage}
-          updateCharacter={this.updateCharacter}
-        />
-      </div>);
+    if (this.state.isLoading) {
+      return <span>Loading...</span>
+    } else {
+      return (
+        <div style={{ textAlign: 'center' }}>
+          <Players player1="boyBlue_" player2="MMFane" />
+          <SetScore player1={this.state.score1} player2={this.state.score2} />
+          <AddMatch onAdd={this.addMatch} />
+          <MatchForm matches={this.state.matches}
+            canSubmit={this.state.canSubmit}
+            deleteMatch={this.deleteMatch}
+            updateScore={this.updateScore}
+            updateStage={this.updateStage}
+            updateCharacter={this.updateCharacter}
+          />
+        </div>
+      );
+    }
   }
 
   addMatch() {
@@ -133,5 +141,29 @@ export default class App extends React.Component {
     const hasWinner = p1Score != p2Score;
     const allMatchesComplete = matches.every(m => { return m.isComplete });
     return enoughSets && hasWinner && allMatchesComplete;
+  }
+
+  getSet() {
+    fetch("https://localhost:44304/Sets/60")
+      .then(response => response.json())
+      .then(json => {
+        var matches = [];
+        for (var i = 0; i < json.matches.length; ++i) {
+          var matchData = json.matches[i];
+          var match = new Match(matchData.index);
+          match.p1Score = matchData.player1Score;
+          match.p2Score = matchData.player2Score;
+          //match.p1Characters.push(matchData.matchCharacters)
+          match.stage = matchData.stageID;
+          matches.push(match);
+        }
+
+        this.setState({
+          isLoading: false,
+          score1: json.player1Score,
+          score2: json.player2Score,
+          matches: matches
+        });
+      });
   }
 }
