@@ -145,7 +145,7 @@ export default class App extends React.Component {
   }
 
   getSet() {
-    fetch("https://localhost:44304/Sets/60")
+    fetch("https://localhost:44357/Sets/1")
       .then(response => response.json())
       .then(json => {
         var gameData = json.game;
@@ -161,8 +161,18 @@ export default class App extends React.Component {
           var match = new Match(matchData.index);
           match.p1Score = matchData.player1Score;
           match.p2Score = matchData.player2Score;
-          //match.p1Characters.push(matchData.matchCharacters)
           match.stage = matchData.stageID;
+
+          const player1ID = json.player1ID;
+          for (var j = 0; j < matchData.matchCharacters.length; ++j) {
+            const character = matchData.matchCharacters[j];
+            if (character.leagueUserID === player1ID) {
+              match.p1Characters.push(character.characterID);
+            } else {
+              match.p2Characters.push(character.characterID);
+            }
+          }
+
           matches.push(match);
         }
 

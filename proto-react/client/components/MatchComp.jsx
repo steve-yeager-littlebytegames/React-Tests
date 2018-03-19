@@ -10,9 +10,8 @@ export default class MatchComp extends React.Component {
         const namePrefix = "matches[" + index + "].";
         const matchCharPrefix = namePrefix + "matchCharacters[";
 
-        const characters = game.characters.map(c => {
-            <option value={c.id}>{c.name}</option>
-        });
+        const characters = game.characters.map(c => <option value={c.id} key={c.id}>{c.name}</option>);
+        const stages = game.stages.map(s => <option value={s.id} key={s.id}>{s.name}</option>);
 
         return (
             <div className="match">
@@ -38,18 +37,14 @@ export default class MatchComp extends React.Component {
                 <label className="match-input">
                     P2 Character
                     <select name={matchCharPrefix + "1].characterID"} value={match.p2Characters[0]} onChange={event => this.props.updateCharacter(index, 2, event.target.value)}>
-                        <option value="72">Mario</option>
-                        <option value="73">Link</option>
-                        <option value="93">Sonic</option>
+                        {characters}
                     </select>
                 </label>
                 <div className="input-break" />
                 <label className="match-input">
                     Stage
                     <select name={namePrefix + "stageID"} value={match.stage || ''} onChange={event => this.props.updateStage(index, event.target.value)}>
-                        <option value="1">Final Destination</option>
-                        <option value="6">Battlefield</option>
-                        <option value="2">Smashville</option>
+                        {stages}
                     </select>
                 </label>
                 <div className="input-break" />
