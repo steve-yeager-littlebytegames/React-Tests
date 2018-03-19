@@ -20,7 +20,7 @@ export default class MatchForm extends React.Component {
 
         return (
             <form onSubmit={this.handleSubmit}>
-                <input type="hidden" name="id" value="38" />
+                <input type="hidden" name="id" value={this.props.id} />
                 {matchComps}
                 <button disabled={!this.props.canSubmit}>Submit</button>
             </form>

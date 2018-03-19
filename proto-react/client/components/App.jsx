@@ -36,7 +36,7 @@ export default class App extends React.Component {
           <Players player1="boyBlue_" player2="MMFane" />
           <SetScore player1={this.state.score1} player2={this.state.score2} />
           <AddMatch onAdd={this.addMatch} />
-          <MatchForm matches={this.state.matches} game={this.game}
+          <MatchForm matches={this.state.matches} game={this.game} id={this.setID}
             canSubmit={this.state.canSubmit}
             deleteMatch={this.deleteMatch}
             updateScore={this.updateScore}
@@ -103,14 +103,21 @@ export default class App extends React.Component {
     this.update(matches);
   }
 
-  updateCharacter(index, player, character) {
+  updateCharacter(index, player, character, characterIndex) {
+    character = parseInt(character);
     var matches = this.state.matches.splice(0);
     var match = matches.find(m => m.index == index);
 
+    console.log(index, player, character, characterIndex);
+
     if (player === 1) {
-      match.p1Characters[0] = character;
+      console.log(match.p1Characters);
+      match.p1Characters[characterIndex] = character;
+      console.log(match.p1Characters);
     } else {
-      match.p2Characters[0] = character;
+      console.log(match.p2Characters);
+      match.p2Characters[characterIndex] = character;
+      console.log(match.p2Characters);
     }
 
     this.update(matches);
@@ -145,12 +152,16 @@ export default class App extends React.Component {
   }
 
   getSet() {
-    fetch("https://localhost:44357/Sets/1")
+    //fetch("https://localhost:44304/Sets/4")
+    //fetch("https://localhost:44304/Sets/95")
+    fetch("https://localhost:44304/Sets/38")
       .then(response => response.json())
       .then(json => {
+        this.setID = json.id;
+
         var gameData = json.game;
         this.game = new Game(gameData.setRules,
-          gameData.chactersPerMatch,
+          gameData.charactersPerMatch,
           gameData.maxMatchPoints,
           gameData.characters,
           gameData.stages);
