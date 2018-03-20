@@ -187,6 +187,8 @@ export default class App extends React.Component {
           matches.push(match);
         }
 
+        matches.sort((a, b) => a.index > b.index);
+
         this.setState({
           isLoading: false,
           score1: json.player1Score,
