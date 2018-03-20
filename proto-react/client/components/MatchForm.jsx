@@ -1,5 +1,5 @@
 import React from 'react';
-import MatchComp from './MatchComp.jsx'
+import MatchSummary from './MatchSummary.jsx'
 
 export default class MatchForm extends React.Component {
     constructor(props) {
@@ -9,19 +9,17 @@ export default class MatchForm extends React.Component {
     }
 
     render() {
-        const matchComps = this.props.matches.map(m =>
-            <MatchComp key={m.index} match={m} game={this.props.game}
-                deleteMatch={this.props.deleteMatch}
-                updateScore={this.props.updateScore}
-                updateStage={this.props.updateStage}
-                updateCharacter={this.props.updateCharacter}
-            />
+        const matchSummaries = this.props.matches.map(m =>
+            <MatchSummary key={m.index}
+                match={m}
+                game={this.props.game}
+                onSelect={this.props.onMatchSelect} />
         );
 
         return (
             <form onSubmit={this.handleSubmit}>
                 <input type="hidden" name="id" value={this.props.id} />
-                {matchComps}
+                {matchSummaries}
                 <button disabled={!this.props.canSubmit}>Submit</button>
             </form>
         );

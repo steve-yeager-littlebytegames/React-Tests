@@ -3,6 +3,7 @@ import Players from './Players.jsx'
 import SetScore from './SetScore.jsx'
 import AddMatch from './AddMatch.jsx'
 import MatchForm from './MatchForm.jsx'
+import MatchEdit from './MatchEdit.jsx'
 import Match from '../src/match.js'
 import Game from '../src/game.js'
 
@@ -15,7 +16,8 @@ export default class App extends React.Component {
       score1: 0,
       score2: 0,
       canSubmit: false,
-      matches: []
+      matches: [],
+      selectedMatch: null,
     }
 
     this.addMatch = this.addMatch.bind(this);
@@ -23,6 +25,9 @@ export default class App extends React.Component {
     this.updateScore = this.updateScore.bind(this);
     this.updateStage = this.updateStage.bind(this);
     this.updateCharacter = this.updateCharacter.bind(this);
+    this.onMatchSelect = this.onMatchSelect.bind(this);
+    this.acceptMatchChanges = this.acceptMatchChanges.bind(this);
+    this.cancelMatchChanges = this.cancelMatchChanges.bind(this);
 
     this.getSet();
   }
@@ -30,25 +35,73 @@ export default class App extends React.Component {
   render() {
     if (this.state.isLoading) {
       return <span>Loading...</span>
+    } else if (this.state.selectedMatch != null) {
+      const match = this.state.selectedMatch;
+      return (
+        <MatchEdit key={match.index} match={match} game={this.game}
+          deleteMatch={this.deleteMatch}
+          updateScore={this.updateScore}
+          updateStage={this.updateStage}
+          updateCharacter={this.updateCharacter}
+          acceptChanges={this.acceptMatchChanges}
+          cancelChanges={this.cancelMatchChanges}
+        />
+      );
     } else {
       return (
         <div style={{ textAlign: 'center' }}>
           <Players player1="boyBlue_" player2="MMFane" />
           <SetScore player1={this.state.score1} player2={this.state.score2} />
-          <AddMatch onAdd={this.addMatch} />
           <MatchForm matches={this.state.matches} game={this.game} id={this.setID}
             canSubmit={this.state.canSubmit}
             deleteMatch={this.deleteMatch}
             updateScore={this.updateScore}
             updateStage={this.updateStage}
             updateCharacter={this.updateCharacter}
+            onMatchSelect={this.onMatchSelect}
           />
+          <AddMatch onAdd={this.addMatch} />
         </div>
       );
     }
   }
 
+  onMatchSelect(match) {
+    this.matchBackup = Object.assign({}, match);
+
+    this.setState({
+      selectedMatch: match
+    });
+  }
+
+  acceptMatchChanges() {
+    this.matchBackup = null;
+
+    this.setState({
+      selectedMatch: null
+    });
+  }
+
+  cancelMatchChanges() {
+    var matches = this.state.matches.splice(0);
+    for (var i = 0; i < matches.length; ++i) {
+      if (matches[i].id === this.matchBackup.id) {
+        matches[i] = this.matchBackup;
+        break;
+      }
+    }
+
+    this.update(matches);
+
+    this.setState({
+      selectedMatch: null
+    });
+
+    this.matchBackup = null;
+  }
+
   addMatch() {
+    // TODO:
     var matches = this.state.matches;
     var matchIndex = matches.length;
     var match = new Match(matchIndex);
@@ -65,7 +118,8 @@ export default class App extends React.Component {
     });
   }
 
-  deleteMatch(matchIndex) {
+  deleteMatch() {
+    // TODO:
     var matches = this.state.matches;
     var index = matches.findIndex(m => m.index == matchIndex);
     matches.splice(index, 1);
@@ -81,9 +135,8 @@ export default class App extends React.Component {
     });
   }
 
-  updateScore(index, player, score) {
-    var matches = this.state.matches.splice(0);
-    var match = matches.find(m => m.index == index);
+  updateScore(player, score) {
+    var match = this.state.selectedMatch;
 
     if (player === 1) {
       match.p1Score = score;
@@ -91,10 +144,13 @@ export default class App extends React.Component {
       match.p2Score = score;
     }
 
-    this.update(matches);
+    this.setState({
+      selectedMatch: match
+    });
   }
 
   updateStage(index, stage) {
+    // TODO:
     var matches = this.state.matches.splice(0);
     var match = matches.find(m => m.index == index);
 
@@ -104,6 +160,7 @@ export default class App extends React.Component {
   }
 
   updateCharacter(index, player, character, characterIndex) {
+    // TODO:
     character = parseInt(character);
     var matches = this.state.matches.splice(0);
     var match = matches.find(m => m.index == index);

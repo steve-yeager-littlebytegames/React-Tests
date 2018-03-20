@@ -1,8 +1,8 @@
 import React from 'react';
-import Match from '../src/match.js'
+import Match from '../src/match.js';
 import '../css/match.css';
 
-export default class MatchComp extends React.Component {
+export default class MatchEdit extends React.Component {
     render() {
         const game = this.props.game;
         const match = this.props.match;
@@ -18,10 +18,11 @@ export default class MatchComp extends React.Component {
 
         return (
             <div className="match">
+                <button type="button" onClick={this.props.deleteMatch}>Delete Match</button>
                 <h4>Match {index + 1}</h4>
                 <label className="match-input">
                     P1 Score
-                    <input type="number" name={namePrefix + "p1score"} value={match.p1Score} onChange={event => this.props.updateScore(index, 1, event.target.value)} />
+                    <input type="number" name={namePrefix + "p1score"} value={match.p1Score} onChange={event => this.props.updateScore(1, event.target.value)} />
                 </label>
                 <label className="match-input">
                     P1 Character
@@ -30,7 +31,7 @@ export default class MatchComp extends React.Component {
                 <div className="input-break" />
                 <label className="match-input">
                     P2 Score
-                    <input type="number" name={namePrefix + "p2score"} value={match.p2Score} onChange={event => this.props.updateScore(index, 2, event.target.value)} />
+                    <input type="number" name={namePrefix + "p2score"} value={match.p2Score} onChange={event => this.props.updateScore(2, event.target.value)} />
                 </label>
                 <label className="match-input">
                     P2 Character
@@ -38,7 +39,8 @@ export default class MatchComp extends React.Component {
                 </label>
                 <div className="input-break" />
                 {stageInput}
-                <button type="button" onClick={() => this.props.deleteMatch(index)}>Delete Match</button>
+                <button type="button" onClick={this.props.cancelChanges}>Cancel</button>
+                <button type="button" onClick={this.props.acceptChanges}>OK</button>
             </div >
         );
     }
