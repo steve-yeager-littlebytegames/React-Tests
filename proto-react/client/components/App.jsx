@@ -50,7 +50,7 @@ export default class App extends React.Component {
     } else {
       return (
         <div style={{ textAlign: 'center' }}>
-          <Players player1="boyBlue_" player2="MMFane" />
+          <Players player1={this.player1} player2={this.player2} />
           <SetScore player1={this.state.score1} player2={this.state.score2} />
           <MatchForm matches={this.state.matches} game={this.game} id={this.setID}
             canSubmit={this.state.canSubmit}
@@ -215,6 +215,8 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(json => {
         this.setID = json.id;
+        this.player1 = json.player1;
+        this.player2 = json.player2;
 
         var gameData = json.game;
         this.game = new Game(gameData.setRules,
