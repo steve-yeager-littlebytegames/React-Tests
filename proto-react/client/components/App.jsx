@@ -149,14 +149,15 @@ export default class App extends React.Component {
     });
   }
 
-  updateStage(index, stage) {
-    // TODO:
-    var matches = this.state.matches.splice(0);
-    var match = matches.find(m => m.index == index);
+  updateStage(stage) {
+    var match = this.state.selectedMatch;
+    stage = parseInt(stage);
 
     match.stage = stage;
 
-    this.update(matches);
+    this.setState({
+      selectedMatch: match
+    });
   }
 
   updateCharacter(player, character, characterIndex) {

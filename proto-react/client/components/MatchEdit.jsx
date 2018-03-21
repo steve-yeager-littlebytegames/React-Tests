@@ -14,7 +14,7 @@ export default class MatchEdit extends React.Component {
 
         const player1CharacterInputs = this.renderCharacterInputs(namePrefix, match, characters, game, 1, match.p1Characters);
         const player2CharacterInputs = this.renderCharacterInputs(namePrefix, match, characters, game, 2, match.p2Characters);
-        const stageInput = this.renderStageInput(namePrefix, match, index, stages, game);
+        const stageInput = this.renderStageInput(namePrefix, match, stages, game);
 
         return (
             <div className="match">
@@ -60,13 +60,13 @@ export default class MatchEdit extends React.Component {
         return characterInputs;
     }
 
-    renderStageInput(namePrefix, match, index, stages, game) {
+    renderStageInput(namePrefix, match, stages, game) {
         if (game.requiresStage) {
             return (
                 <div>
                     <label className="match-input">
                         Stage
-                    <select name={namePrefix + "stage"} value={match.stage || ''} onChange={event => this.props.updateStage(index, event.target.value)}>
+                        <select name={namePrefix + "stage"} value={match.stage || ''} onChange={event => this.props.updateStage(event.target.value)}>
                             {stages}
                         </select>
                     </label>
