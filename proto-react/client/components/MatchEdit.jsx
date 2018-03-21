@@ -12,8 +12,8 @@ export default class MatchEdit extends React.Component {
         const characters = game.characters.map(c => <option value={c.id} key={c.id}>{c.name}</option>);
         const stages = game.stages.map(s => <option value={s.id} key={s.id}>{s.name}</option>);
 
-        const player1CharacterInputs = this.renderCharacterInputs(namePrefix, match, index, characters, game, 1, match.p1Characters);
-        const player2CharacterInputs = this.renderCharacterInputs(namePrefix, match, index, characters, game, 2, match.p2Characters);
+        const player1CharacterInputs = this.renderCharacterInputs(namePrefix, match, characters, game, 1, match.p1Characters);
+        const player2CharacterInputs = this.renderCharacterInputs(namePrefix, match, characters, game, 2, match.p2Characters);
         const stageInput = this.renderStageInput(namePrefix, match, index, stages, game);
 
         return (
@@ -45,13 +45,13 @@ export default class MatchEdit extends React.Component {
         );
     }
 
-    renderCharacterInputs(namePrefix, match, index, characters, game, playerNumber, playerCharacters) {
+    renderCharacterInputs(namePrefix, match, characters, game, playerNumber, playerCharacters) {
         const characterInputs = [];
 
         for (var i = 0; i < game.charactersPerMatch; i++) {
             var characterIndex = i;
             characterInputs.push(
-                <select key={i} name={`${namePrefix}p${playerNumber}characters[${i}]`} value={playerCharacters[i]} onChange={event => this.props.updateCharacter(index, playerNumber, event.target.value, characterIndex)}>
+                <select key={i} name={`${namePrefix}p${playerNumber}characters[${i}]`} value={playerCharacters[i]} onChange={event => this.props.updateCharacter(playerNumber, event.target.value, characterIndex)}>
                     {characters}
                 </select>
             );

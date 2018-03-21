@@ -67,7 +67,7 @@ export default class App extends React.Component {
   }
 
   onMatchSelect(match) {
-    this.matchBackup = Object.assign({}, match);
+    this.matchBackup = Match.clone(match);
 
     this.setState({
       selectedMatch: match
@@ -85,8 +85,8 @@ export default class App extends React.Component {
   cancelMatchChanges() {
     var matches = this.state.matches.splice(0);
     for (var i = 0; i < matches.length; ++i) {
-      if (matches[i].id === this.matchBackup.id) {
-        matches[i] = this.matchBackup;
+      if (matches[i].index === this.matchBackup.index) {
+        matches[i] = Match.clone(this.matchBackup);
         break;
       }
     }
@@ -159,25 +159,19 @@ export default class App extends React.Component {
     this.update(matches);
   }
 
-  updateCharacter(index, player, character, characterIndex) {
-    // TODO:
+  updateCharacter(player, character, characterIndex) {
+    var match = this.state.selectedMatch;
     character = parseInt(character);
-    var matches = this.state.matches.splice(0);
-    var match = matches.find(m => m.index == index);
-
-    console.log(index, player, character, characterIndex);
 
     if (player === 1) {
-      console.log(match.p1Characters);
       match.p1Characters[characterIndex] = character;
-      console.log(match.p1Characters);
     } else {
-      console.log(match.p2Characters);
       match.p2Characters[characterIndex] = character;
-      console.log(match.p2Characters);
     }
 
-    this.update(matches);
+    this.setState({
+      selectedMatch: match
+    });
   }
 
   update(matches) {
