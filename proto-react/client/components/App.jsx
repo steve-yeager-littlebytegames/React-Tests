@@ -275,7 +275,6 @@ export default class App extends React.Component {
     }
 
     const data = new FormData(event.target);
-    console.log(event.target);
     fetch("https://localhost:44304/Sets/Submit", {
       method: "POST",
       body: data
