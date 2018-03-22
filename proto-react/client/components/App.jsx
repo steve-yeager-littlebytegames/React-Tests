@@ -1,3 +1,7 @@
+// TODO: Only submit if there is a change.
+// TODO: Warn about leaving if there is a change.
+// TODO: Validate individual match edit.
+
 import React from 'react';
 import Players from './Players.jsx'
 import SetScore from './SetScore.jsx'
@@ -28,6 +32,7 @@ export default class App extends React.Component {
     this.onMatchSelect = this.onMatchSelect.bind(this);
     this.acceptMatchChanges = this.acceptMatchChanges.bind(this);
     this.cancelMatchChanges = this.cancelMatchChanges.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
     this.getSet();
   }
@@ -59,6 +64,7 @@ export default class App extends React.Component {
             updateStage={this.updateStage}
             updateCharacter={this.updateCharacter}
             onMatchSelect={this.onMatchSelect}
+            onSubmit={this.onSubmit}
           />
           <AddMatch onAdd={this.addMatch} />
         </div>
@@ -75,6 +81,8 @@ export default class App extends React.Component {
   }
 
   acceptMatchChanges() {
+    this.update(this.state.matches);
+
     this.matchBackup = null;
 
     this.setState({
@@ -101,27 +109,32 @@ export default class App extends React.Component {
   }
 
   addMatch() {
-    // TODO:
     var matches = this.state.matches;
     var matchIndex = matches.length;
-    var match = new Match(matchIndex);
+    var match = null;
+
     if (matches.length != 0) {
       var lastMatch = matches[matches.length - 1];
-      match.p1Characters = lastMatch.p1Characters.splice(0);
-      match.p2Characters = lastMatch.p2Characters.splice(0);
-      match.stage = lastMatch.stage;
+      match = Match.clone(lastMatch);
+      match.index = matchIndex;
+    } else {
+      match = new Match(matchIndex);
+      match.p1Characters.push(this.game.characters[0].id);
+      match.p2Characters.push(this.game.characters[0].id);
+      match.stage = this.game.stages[0].id;
     }
 
     matches.push(match);
     this.setState({
       matches: matches
     });
+
+    this.onMatchSelect(match);
   }
 
   deleteMatch() {
-    // TODO:
     var matches = this.state.matches;
-    var index = matches.findIndex(m => m.index == matchIndex);
+    var index = matches.findIndex(m => m.index === this.state.selectedMatch.index);
     matches.splice(index, 1);
 
     for (var i = 0; i < matches.length; ++i) {
@@ -130,8 +143,10 @@ export default class App extends React.Component {
 
     this.update(matches);
 
+    this.matchBackup = null;
+
     this.setState({
-      matches: matches
+      selectedMatch: null
     });
   }
 
@@ -206,7 +221,7 @@ export default class App extends React.Component {
   getSet() {
     //fetch("https://localhost:44304/Sets/4")
     //fetch("https://localhost:44304/Sets/95")
-    fetch("https://localhost:44304/Sets/38")
+    fetch("https://localhost:44304/Sets/64")
       .then(response => response.json())
       .then(json => {
         this.setID = json.id;
@@ -250,5 +265,20 @@ export default class App extends React.Component {
           matches: matches
         });
       });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+
+    if (!this.canSubmit) {
+      return;
+    }
+
+    const data = new FormData(event.target);
+    console.log(event.target);
+    fetch("https://localhost:44304/Sets/Submit", {
+      method: "POST",
+      body: data
+    });
   }
 }

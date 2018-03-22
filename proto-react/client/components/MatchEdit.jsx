@@ -7,14 +7,13 @@ export default class MatchEdit extends React.Component {
         const game = this.props.game;
         const match = this.props.match;
         const index = match.index;
-        const namePrefix = "matches[" + index + "].";
 
         const characters = game.characters.map(c => <option value={c.id} key={c.id}>{c.name}</option>);
         const stages = game.stages.map(s => <option value={s.id} key={s.id}>{s.name}</option>);
 
-        const player1CharacterInputs = this.renderCharacterInputs(namePrefix, match, characters, game, 1, match.p1Characters);
-        const player2CharacterInputs = this.renderCharacterInputs(namePrefix, match, characters, game, 2, match.p2Characters);
-        const stageInput = this.renderStageInput(namePrefix, match, stages, game);
+        const player1CharacterInputs = this.renderCharacterInputs(match, characters, game, 1, match.p1Characters);
+        const player2CharacterInputs = this.renderCharacterInputs(match, characters, game, 2, match.p2Characters);
+        const stageInput = this.renderStageInput(match, stages, game);
 
         return (
             <div className="match">
@@ -22,7 +21,7 @@ export default class MatchEdit extends React.Component {
                 <h4>Match {index + 1}</h4>
                 <label className="match-input">
                     P1 Score
-                    <input type="number" name={namePrefix + "p1score"} value={match.p1Score} onChange={event => this.props.updateScore(1, event.target.value)} />
+                    <input type="number" value={match.p1Score} onChange={event => this.props.updateScore(1, event.target.value)} />
                 </label>
                 <label className="match-input">
                     P1 Character
@@ -31,7 +30,7 @@ export default class MatchEdit extends React.Component {
                 <div className="input-break" />
                 <label className="match-input">
                     P2 Score
-                    <input type="number" name={namePrefix + "p2score"} value={match.p2Score} onChange={event => this.props.updateScore(2, event.target.value)} />
+                    <input type="number" value={match.p2Score} onChange={event => this.props.updateScore(2, event.target.value)} />
                 </label>
                 <label className="match-input">
                     P2 Character
@@ -45,13 +44,13 @@ export default class MatchEdit extends React.Component {
         );
     }
 
-    renderCharacterInputs(namePrefix, match, characters, game, playerNumber, playerCharacters) {
+    renderCharacterInputs(match, characters, game, playerNumber, playerCharacters) {
         const characterInputs = [];
 
         for (var i = 0; i < game.charactersPerMatch; i++) {
             var characterIndex = i;
             characterInputs.push(
-                <select key={i} name={`${namePrefix}p${playerNumber}characters[${i}]`} value={playerCharacters[i]} onChange={event => this.props.updateCharacter(playerNumber, event.target.value, characterIndex)}>
+                <select key={i} value={playerCharacters[i]} onChange={event => this.props.updateCharacter(playerNumber, event.target.value, characterIndex)}>
                     {characters}
                 </select>
             );
@@ -60,13 +59,13 @@ export default class MatchEdit extends React.Component {
         return characterInputs;
     }
 
-    renderStageInput(namePrefix, match, stages, game) {
+    renderStageInput(match, stages, game) {
         if (game.requiresStage) {
             return (
                 <div>
                     <label className="match-input">
                         Stage
-                        <select name={namePrefix + "stage"} value={match.stage || ''} onChange={event => this.props.updateStage(event.target.value)}>
+                        <select value={match.stage || ''} onChange={event => this.props.updateStage(event.target.value)}>
                             {stages}
                         </select>
                     </label>

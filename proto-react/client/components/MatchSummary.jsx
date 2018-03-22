@@ -7,15 +7,26 @@ export default class MatchSummary extends React.Component {
         const match = this.props.match;
         const game = this.props.game;
 
-        const p1Characters = this.getCharacterImages(match.p1Characters);
-        const p2Characters = this.getCharacterImages(match.p2Characters);
+        const p1CharacterImages = this.getCharacterImages(match.p1Characters);
+        const p2CharacterImages = this.getCharacterImages(match.p2Characters);
+
+        const index = match.index;
+        const namePrefix = "matches[" + index + "].";
+        const p1CharacterInputs = match.p1Characters.map((c, i) => <input key={i} type="hidden" name={`${namePrefix}p1characters[${i}]`} value={c} />);
+        const p2CharacterInputs = match.p2Characters.map((c, i) => <input key={i} type="hidden" name={`${namePrefix}p2characters[${i}]`} value={c} />);
 
         return (
             <div className="match-container" onClick={() => this.props.onSelect(match)}>
+                <input type="hidden" name={namePrefix + "p1score"} value={match.p1Score} />
+                <input type="hidden" name={namePrefix + "p2score"} value={match.p2Score} />
+                <input type="hidden" name={namePrefix + "stage"} value={match.stage || ''} />
+                {p1CharacterInputs}
+                {p2CharacterInputs}
+
                 <span>Match {match.index + 1}</span>
                 <div className="match-middle">
                     <div className="character-pics">
-                        {p1Characters}
+                        {p1CharacterImages}
                     </div>
                     <div className="match-score-container">
                         <span className="match-score">{match.p1Score}</span>
@@ -23,7 +34,7 @@ export default class MatchSummary extends React.Component {
                         <span className="match-score">{match.p2Score}</span>
                     </div>
                     <div className="character-pics">
-                        {p2Characters}
+                        {p2CharacterImages}
                     </div>
                 </div>
                 {game.requiresStage &&
@@ -33,10 +44,10 @@ export default class MatchSummary extends React.Component {
         );
     }
 
-    getCharacterImages(characters) {
-        return characters.map(c => {
-            var url = this.props.game.characters.find(x => x.id === c).pic;
-            return <img key={c} src={url} />
+    getCharacterImages(playerCharacters) {
+        return playerCharacters.map(pc => {
+            var url = this.props.game.characters.find(c => c.id === pc).pic;
+            return <img key={pc} src={url} />
         });
     }
 }
