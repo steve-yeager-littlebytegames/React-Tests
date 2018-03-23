@@ -1,4 +1,3 @@
-// TODO: Validate individual match edit.
 // TODO: Only submit if there is a change.
 // TODO: Warn about leaving if there is a change.
 // TODO: Prefill first match with last used characters.
