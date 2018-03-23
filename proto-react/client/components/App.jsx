@@ -28,7 +28,6 @@ export default class App extends React.Component {
 
     this.addMatch = this.addMatch.bind(this);
     this.deleteMatch = this.deleteMatch.bind(this);
-    this.updateCharacter = this.updateCharacter.bind(this);
     this.onMatchSelect = this.onMatchSelect.bind(this);
     this.acceptMatchChanges = this.acceptMatchChanges.bind(this);
     this.cancelMatchChanges = this.cancelMatchChanges.bind(this);
@@ -45,7 +44,6 @@ export default class App extends React.Component {
       return (
         <MatchEdit key={match.index} match={match} game={this.game}
           deleteMatch={this.deleteMatch}
-          updateCharacter={this.updateCharacter}
           acceptChanges={this.acceptMatchChanges}
           cancelChanges={this.cancelMatchChanges}
         />
@@ -144,21 +142,6 @@ export default class App extends React.Component {
 
     this.setState({
       selectedMatch: null
-    });
-  }
-
-  updateCharacter(player, character, characterIndex) {
-    var match = this.state.selectedMatch;
-    character = parseInt(character);
-
-    if (player === 1) {
-      match.p1Characters[characterIndex] = character;
-    } else {
-      match.p2Characters[characterIndex] = character;
-    }
-
-    this.setState({
-      selectedMatch: match
     });
   }
 

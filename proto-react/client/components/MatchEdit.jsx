@@ -10,9 +10,6 @@ export default class MatchEdit extends React.Component {
             match: this.props.match,
             canAdd: this.canAdd(this.props.match),
         };
-
-        this.updateScore = this.updateScore.bind(this);
-        this.updateStage = this.updateStage.bind(this);
     }
 
     render() {
@@ -66,7 +63,7 @@ export default class MatchEdit extends React.Component {
         for (var i = 0; i < game.charactersPerMatch; i++) {
             var characterIndex = i;
             characterInputs.push(
-                <select key={i} value={playerCharacters[i]} onChange={event => this.props.updateCharacter(playerNumber, event.target.value, characterIndex)}>
+                <select key={i} value={playerCharacters[i]} onChange={event => this.updateCharacter(playerNumber, event.target.value, characterIndex)}>
                     {characters}
                 </select>
             );
@@ -100,10 +97,11 @@ export default class MatchEdit extends React.Component {
     }
 
     updateScore(player, score) {
+        var match = this.state.match;
+
         if (score != '') {
             score = parseInt(score, 10);
         }
-        var match = this.state.match;
 
         if (player === 1) {
             match.p1Score = score;
@@ -117,8 +115,23 @@ export default class MatchEdit extends React.Component {
         });
     }
 
+    updateCharacter(player, character, characterIndex) {
+        var match = this.state.match;
+        character = parseInt(character);
+
+        if (player === 1) {
+            match.p1Characters[characterIndex] = character;
+        } else {
+            match.p2Characters[characterIndex] = character;
+        }
+
+        this.setState({
+            match: match,
+        });
+    }
+
     updateStage(stage) {
-        var match = this.props.match;
+        var match = this.state.match;
         stage = parseInt(stage);
         match.stage = stage;
 
