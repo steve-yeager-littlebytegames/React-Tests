@@ -45,7 +45,6 @@ export default class App extends React.Component {
       return (
         <MatchEdit key={match.index} match={match} game={this.game}
           deleteMatch={this.deleteMatch}
-          updateScore={this.updateScore}
           updateCharacter={this.updateCharacter}
           acceptChanges={this.acceptMatchChanges}
           cancelChanges={this.cancelMatchChanges}
