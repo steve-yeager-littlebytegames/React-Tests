@@ -1,6 +1,8 @@
+// TODO: Validate individual match edit.
 // TODO: Only submit if there is a change.
 // TODO: Warn about leaving if there is a change.
-// TODO: Validate individual match edit.
+// TODO: Prefill first match with last used characters.
+// TODO: Get set id from url.
 
 import React from 'react';
 import Players from './Players.jsx'
@@ -22,11 +24,10 @@ export default class App extends React.Component {
       canSubmit: false,
       matches: [],
       selectedMatch: null,
-    }
+    };
 
     this.addMatch = this.addMatch.bind(this);
     this.deleteMatch = this.deleteMatch.bind(this);
-    this.updateScore = this.updateScore.bind(this);
     this.updateStage = this.updateStage.bind(this);
     this.updateCharacter = this.updateCharacter.bind(this);
     this.onMatchSelect = this.onMatchSelect.bind(this);
@@ -147,20 +148,6 @@ export default class App extends React.Component {
 
     this.setState({
       selectedMatch: null
-    });
-  }
-
-  updateScore(player, score) {
-    var match = this.state.selectedMatch;
-
-    if (player === 1) {
-      match.p1Score = score;
-    } else {
-      match.p2Score = score;
-    }
-
-    this.setState({
-      selectedMatch: match
     });
   }
 

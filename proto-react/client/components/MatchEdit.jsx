@@ -3,6 +3,16 @@ import Match from '../src/match.js';
 import '../css/match.css';
 
 export default class MatchEdit extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            canAdd: false
+        };
+
+        this.updateScore = this.updateScore.bind(this);
+    }
+
     render() {
         const game = this.props.game;
         const match = this.props.match;
@@ -21,7 +31,7 @@ export default class MatchEdit extends React.Component {
                 <h4>Match {index + 1}</h4>
                 <label className="match-input">
                     P1 Score
-                    <input type="number" value={match.p1Score} onChange={event => this.props.updateScore(1, event.target.value)} />
+                    {this.renderScore(match.p1Score, 1)}
                 </label>
                 <label className="match-input">
                     P1 Character
@@ -30,7 +40,7 @@ export default class MatchEdit extends React.Component {
                 <div className="input-break" />
                 <label className="match-input">
                     P2 Score
-                    <input type="number" value={match.p2Score} onChange={event => this.props.updateScore(2, event.target.value)} />
+                    {this.renderScore(match.p2Score, 2)}
                 </label>
                 <label className="match-input">
                     P2 Character
@@ -39,9 +49,13 @@ export default class MatchEdit extends React.Component {
                 <div className="input-break" />
                 {stageInput}
                 <button type="button" onClick={this.props.cancelChanges}>Cancel</button>
-                <button type="button" onClick={this.props.acceptChanges}>OK</button>
+                <button type="button" disabled={!this.state.canAdd} onClick={this.props.acceptChanges}>OK</button>
             </div >
         );
+    }
+
+    renderScore(score, player) {
+        return <input type="number" value={score} min="0" max={this.props.game.maxMatchPoints} onChange={event => this.updateScore(player, event.target.value)} />
     }
 
     renderCharacterInputs(match, characters, game, playerNumber, playerCharacters) {
@@ -73,5 +87,28 @@ export default class MatchEdit extends React.Component {
                 </div>
             )
         }
+    }
+
+    updateScore(player, score) {
+        if (score != '') {
+            score = parseInt(score, 10);
+        }
+        var match = this.props.match;
+
+        if (player === 1) {
+            match.p1Score = score;
+        } else {
+            match.p2Score = score;
+        }
+
+        var maxPoints = this.props.game.maxPoints;
+        var canAdd = match.p1Score != match.p2Score
+            && (match.p1Score === maxPoints || match.p2Score === maxPoints)
+            && match.p1Score >= 0 && match.p2Score >= 0
+            && match.p1Score <= maxPoints && match.p2Score <= maxPoints;
+
+        this.setState({
+            canAdd: canAdd
+        });
     }
 }
