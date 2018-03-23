@@ -28,7 +28,6 @@ export default class App extends React.Component {
 
     this.addMatch = this.addMatch.bind(this);
     this.deleteMatch = this.deleteMatch.bind(this);
-    this.updateStage = this.updateStage.bind(this);
     this.updateCharacter = this.updateCharacter.bind(this);
     this.onMatchSelect = this.onMatchSelect.bind(this);
     this.acceptMatchChanges = this.acceptMatchChanges.bind(this);
@@ -47,7 +46,6 @@ export default class App extends React.Component {
         <MatchEdit key={match.index} match={match} game={this.game}
           deleteMatch={this.deleteMatch}
           updateScore={this.updateScore}
-          updateStage={this.updateStage}
           updateCharacter={this.updateCharacter}
           acceptChanges={this.acceptMatchChanges}
           cancelChanges={this.cancelMatchChanges}
@@ -62,7 +60,6 @@ export default class App extends React.Component {
             canSubmit={this.state.canSubmit}
             deleteMatch={this.deleteMatch}
             updateScore={this.updateScore}
-            updateStage={this.updateStage}
             updateCharacter={this.updateCharacter}
             onMatchSelect={this.onMatchSelect}
             onSubmit={this.onSubmit}
@@ -148,17 +145,6 @@ export default class App extends React.Component {
 
     this.setState({
       selectedMatch: null
-    });
-  }
-
-  updateStage(stage) {
-    var match = this.state.selectedMatch;
-    stage = parseInt(stage);
-
-    match.stage = stage;
-
-    this.setState({
-      selectedMatch: match
     });
   }
 

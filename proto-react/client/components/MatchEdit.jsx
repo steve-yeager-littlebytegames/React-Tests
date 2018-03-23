@@ -7,15 +7,17 @@ export default class MatchEdit extends React.Component {
         super(props);
 
         this.state = {
-            canAdd: false
+            match: this.props.match,
+            canAdd: this.canAdd(this.props.match),
         };
 
         this.updateScore = this.updateScore.bind(this);
+        this.updateStage = this.updateStage.bind(this);
     }
 
     render() {
         const game = this.props.game;
-        const match = this.props.match;
+        const match = this.state.match;
         const index = match.index;
 
         const characters = game.characters.map(c => <option value={c.id} key={c.id}>{c.name}</option>);
@@ -79,7 +81,7 @@ export default class MatchEdit extends React.Component {
                 <div>
                     <label className="match-input">
                         Stage
-                        <select value={match.stage || ''} onChange={event => this.props.updateStage(event.target.value)}>
+                        <select value={match.stage || ''} onChange={event => this.updateStage(event.target.value)}>
                             {stages}
                         </select>
                     </label>
@@ -89,11 +91,19 @@ export default class MatchEdit extends React.Component {
         }
     }
 
+    canAdd(match) {
+        var maxPoints = this.props.game.maxPoints;
+        return match.p1Score != match.p2Score
+            && (match.p1Score === maxPoints || match.p2Score === maxPoints)
+            && match.p1Score >= 0 && match.p2Score >= 0
+            && match.p1Score <= maxPoints && match.p2Score <= maxPoints;
+    }
+
     updateScore(player, score) {
         if (score != '') {
             score = parseInt(score, 10);
         }
-        var match = this.props.match;
+        var match = this.state.match;
 
         if (player === 1) {
             match.p1Score = score;
@@ -101,14 +111,19 @@ export default class MatchEdit extends React.Component {
             match.p2Score = score;
         }
 
-        var maxPoints = this.props.game.maxPoints;
-        var canAdd = match.p1Score != match.p2Score
-            && (match.p1Score === maxPoints || match.p2Score === maxPoints)
-            && match.p1Score >= 0 && match.p2Score >= 0
-            && match.p1Score <= maxPoints && match.p2Score <= maxPoints;
+        this.setState({
+            match: match,
+            canAdd: this.canAdd(match),
+        });
+    }
+
+    updateStage(stage) {
+        var match = this.props.match;
+        stage = parseInt(stage);
+        match.stage = stage;
 
         this.setState({
-            canAdd: canAdd
+            match: match,
         });
     }
 }
