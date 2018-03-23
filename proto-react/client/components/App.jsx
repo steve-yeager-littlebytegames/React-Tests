@@ -1,7 +1,10 @@
+// TODO: Display alert if submit failed.
 // TODO: Only submit if there is a change.
 // TODO: Warn about leaving if there is a change.
 // TODO: Prefill first match with last used characters.
 // TODO: Get set id from url.
+// TODO: Lock page while submitting.
+// TODO: Change page after successful submit.
 
 import React from 'react';
 import Players from './Players.jsx'
