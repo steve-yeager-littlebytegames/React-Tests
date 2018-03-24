@@ -1,4 +1,3 @@
-// TODO: Display alert if submit failed.
 // TODO: Only submit if there is a change.
 // TODO: Warn about leaving if there is a change.
 // TODO: Prefill first match with last used characters.
@@ -235,6 +234,20 @@ export default class App extends React.Component {
     fetch("https://localhost:44304/Sets/Submit", {
       method: "POST",
       body: data
-    });
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw response;
+        }
+        return response.json();
+      })
+      .then(json => {
+        console.log("Set submitted!");
+      })
+      .catch(error => {
+        error.text().then(reason => {
+          alert("Failed to submit set!\n" + reason);
+        });
+      });
   }
 }
