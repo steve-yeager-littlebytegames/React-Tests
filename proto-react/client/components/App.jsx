@@ -1,8 +1,7 @@
-// TODO: Only submit if there is a change.
 // TODO: Warn about leaving if there is a change.
 // TODO: Prefill first match with last used characters.
-// TODO: Get set id from url.
 // TODO: Lock page while submitting.
+// TODO: Get set id from url.
 // TODO: Change page after successful submit.
 
 import React from 'react';
@@ -26,6 +25,8 @@ export default class App extends React.Component {
       matches: [],
       selectedMatch: null,
     };
+
+    this.originalMatches = [];
 
     this.addMatch = this.addMatch.bind(this);
     this.deleteMatch = this.deleteMatch.bind(this);
@@ -168,10 +169,11 @@ export default class App extends React.Component {
   }
 
   canSubmit(matches, p1Score, p2Score) {
+    const containsChange = !(this.originalMatches.length == matches.length && matches.every((m, i) => m.compareTo(this.originalMatches[i])));
     const enoughSets = matches.length > 1;
     const hasWinner = p1Score != p2Score;
     const allMatchesComplete = matches.every(m => { return m.isComplete });
-    return enoughSets && hasWinner && allMatchesComplete;
+    return containsChange && enoughSets && hasWinner && allMatchesComplete;
   }
 
   getSet() {
@@ -213,6 +215,7 @@ export default class App extends React.Component {
         }
 
         matches.sort((a, b) => a.index > b.index);
+        this.originalMatches = matches.map(m => Match.clone(m));
 
         this.setState({
           isLoading: false,
