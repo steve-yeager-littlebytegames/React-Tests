@@ -18,5 +18,6 @@ module.exports = {
       { test: /\.css$/, loader: "style-loader!css-loader" },
     ]
   },
-  plugins: [HtmlWebpackPluginConfig]
+  plugins: [HtmlWebpackPluginConfig],
+  devtool: "source-map"
 }
