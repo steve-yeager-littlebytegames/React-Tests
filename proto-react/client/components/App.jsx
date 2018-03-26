@@ -114,19 +114,23 @@ export default class App extends React.Component {
       var lastMatch = matches[matches.length - 1];
       match = Match.clone(lastMatch);
       match.index = matchIndex;
+
+      matches.push(match);
+      this.setState({
+        matches: matches
+      });
+      this.onMatchSelect(match);
     } else {
-      match = new Match(matchIndex);
-      match.p1Characters.push(this.game.characters[0].id);
-      match.p2Characters.push(this.game.characters[0].id);
-      match.stage = this.game.stages[0].id;
+      fetch("https://localhost:44357/LeagueUsers/History/25?setCount=3")
+        .then(response => response.json())
+        .then(json => {
+          match = new Match(0);
+          match.p1Characters.push(this.game.characters[0].id);
+          match.p2Characters.push(this.game.characters[0].id);
+          match.stage = this.game.stages[0].id;
+          this.onMatchSelect(match);
+        });
     }
-
-    matches.push(match);
-    this.setState({
-      matches: matches
-    });
-
-    this.onMatchSelect(match);
   }
 
   deleteMatch() {
@@ -179,7 +183,7 @@ export default class App extends React.Component {
   getSet() {
     //fetch("https://localhost:44304/Sets/4")
     //fetch("https://localhost:44304/Sets/95")
-    fetch("https://localhost:44304/Sets/64")
+    fetch("https://localhost:44357/Sets/20")
       .then(response => response.json())
       .then(json => {
         this.setID = json.id;
